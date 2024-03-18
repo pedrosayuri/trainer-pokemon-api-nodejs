@@ -1,28 +1,7 @@
-// import axios, { AxiosResponse } from "axios";
-// import { FastifyRequest, FastifyReply } from "fastify";
-
-// interface PokemonType {
-//   slot: number;
-//   type: { name: string };
-// }
-
-// interface PokemonData {
-//   id: number;
-//   name: string;
-//   order: number;
-//   base_experience: number;
-//   weight: number;
-//   height: number;
-//   types: PokemonType[];
-// }
-
-// interface Pokemon {
-//   id: number;
-//   name: string;
 import { fetchPokemonData } from "../../../use-cases/pokemon-api";
 import { PokemonData, Pokemon } from "../../models/pokemon";
 
-export async function listPokemon(): Promise<Pokemon[]> {
+export async function listAllPokemon(): Promise<Pokemon[]> {
   try {
     const pokemonDataList: PokemonData[] = await fetchPokemonData();
     const pokemonListPromises: Promise<Pokemon>[] = pokemonDataList.map(
@@ -40,6 +19,7 @@ export async function listPokemon(): Promise<Pokemon[]> {
             type_name: type.type.name,
           })),
         };
+
         return pokemon;
       },
     );

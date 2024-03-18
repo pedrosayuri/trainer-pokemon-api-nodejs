@@ -14,6 +14,17 @@ export interface PokemonData {
   url: string;
 }
 
+export interface Evolution {
+  id: number;
+  name: string;
+  order: number;
+  base_experience: number;
+  weight: number;
+  height: number;
+  image: string;
+  types: { slot: number; type_name: string }[];
+}
+
 export interface Pokemon {
   id: number;
   name: string;
@@ -23,4 +34,27 @@ export interface Pokemon {
   height: number;
   image: string;
   types: { slot: number; type_name: string }[];
+  evolutions?: Evolution[] | null;
+}
+
+export interface EvolutionDetails {
+  trigger: {
+    name: string;
+    url: string;
+  };
+}
+
+export interface EvolutionNode {
+  is_baby: boolean;
+  species: {
+    name: string;
+    url: string;
+  };
+  evolves_to: EvolutionNode[];
+  evolution_details: EvolutionDetails[];
+}
+
+export interface EvolutionChain {
+  id: number;
+  chain: EvolutionNode;
 }
