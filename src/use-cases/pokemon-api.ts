@@ -1,66 +1,83 @@
 import axios, { AxiosResponse } from "axios";
 import {
+  ChainLink,
   EvolutionChain,
-  EvolutionNode,
   PokemonData,
+  PokemonSpecies,
 } from "../http/models/pokemon";
 
 export async function fetchPokemonData(): Promise<PokemonData[]> {
-  const response: AxiosResponse<{ results: { name: string; url: string }[] }> =
-    await axios.get("https://pokeapi.co/api/v2/pokemon");
+  try {
+    const response: AxiosResponse<{
+      results: { name: string; url: string }[];
+    }> = await axios.get(
+      "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0",
+    );
 
-  const pokemonDetailsPromises: Promise<PokemonData>[] = response.data.results
-    .slice(0, 10)
-    .map((pokemon) => axios.get(pokemon.url).then((res) => res.data));
-  const pokemonDetails: PokemonData[] = await Promise.all(
-    pokemonDetailsPromises,
-  );
+    const pokemonDetailsPromises: Promise<PokemonData>[] =
+      response.data.results.map((pokemon) =>
+        axios.get(pokemon.url).then((res) => res.data),
+      );
+    const pokemonDetails: PokemonData[] = await Promise.all(
+      pokemonDetailsPromises,
+    );
 
-  return pokemonDetails;
+    return pokemonDetails;
+  } catch (error) {
+    console.error("Error fetching Pokémon data:", error);
+    throw error;
+  }
 }
 
-async function getEvolutionChain(
-  pokemonId: number,
-): Promise<EvolutionChain | null> {
+export async function fetchEvolutionChain(
+  pokemonEvolution: string,
+): Promise<string[] | null> {
   try {
-    const response = await axios.get(
-      `https://pokeapi.co/api/v2/evolution-chain/${pokemonId}/`,
-    );
-    return response.data;
+    const response = await axios.get<EvolutionChain>(pokemonEvolution);
+
+    function extractPokemonNames(chainLink: ChainLink): string[] {
+      const names: string[] = [];
+      if (chainLink.species && chainLink.species.name) {
+        names.push(chainLink.species.name);
+      }
+      if (chainLink.evolves_to && chainLink.evolves_to.length > 0) {
+        chainLink.evolves_to.forEach((link) => {
+          names.push(...extractPokemonNames(link));
+        });
+      }
+      return names;
+    }
+
+    const evolutionNames: string[] = extractPokemonNames(response.data.chain);
+    console.log("Pokémon Evolution Names:", evolutionNames);
+
+    return evolutionNames;
   } catch (error) {
-    console.error("Erro ao obter cadeia de evolução:", error);
+    console.error("Error fetching evolution chain:", error);
     return null;
   }
 }
 
-export async function fetchAndDisplayEvolutionChain(
+export async function fetchPokemonSpecies(
   pokemonId: number,
-): Promise<EvolutionNode | null> {
+): Promise<string | null> {
   try {
-    const evolutionChain = await getEvolutionChain(pokemonId);
-    if (evolutionChain) {
-      return evolutionChain.chain;
+    const response = await axios.get<PokemonSpecies>(
+      `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`,
+    );
+
+    if (response.data.evolution_chain) {
+      const evolutionChainUrl = response.data.evolution_chain.url;
+      console.log("Evolution Chain URL:", evolutionChainUrl);
+      return evolutionChainUrl;
     } else {
-      console.log(
-        "Não foi possível encontrar a cadeia de evolução para o Pokémon.",
+      console.error(
+        `No evolution chain found for Pokémon with ID ${pokemonId}.`,
       );
       return null;
     }
   } catch (error) {
-    console.error("Erro ao obter cadeia de evolução:", error);
+    console.error("Error fetching Pokémon species:", error);
     return null;
   }
 }
-
-// function displayEvolutionChain(node: EvolutionNode) {
-//   console.log(node.species.name);
-//   if (node.evolves_to.length > 0) {
-//     console.log("Evolui para:");
-//     node.evolves_to.forEach((evolution) => {
-//       console.log(evolution.species.name);
-//       if (evolution.evolves_to.length > 0) {
-//         displayEvolutionChain(evolution);
-//       }
-//     });
-//   }
-// }

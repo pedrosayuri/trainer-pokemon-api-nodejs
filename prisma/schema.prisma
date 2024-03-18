@@ -25,12 +25,13 @@ model Trainer {
 }
 
 model Pokemon {
-  id         String   @id @default(uuid())
-  trainer_id String
-  trainer    Trainer  @relation(fields: [trainer_id], references: [id])
-  created_at DateTime @default(now())
-  Team       Team?    @relation(fields: [team_id], references: [id])
-  team_id    String?
+  id           String   @id @default(uuid())
+  trainer_id   String
+  pokemon_name String
+  trainer      Trainer  @relation(fields: [trainer_id], references: [id])
+  created_at   DateTime @default(now())
+  Team         Team?    @relation(fields: [team_id], references: [id])
+  team_id      String?
 
   @@map("pokemons")
 }

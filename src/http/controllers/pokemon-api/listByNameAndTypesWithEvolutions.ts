@@ -1,13 +1,9 @@
 import {
   fetchPokemonData,
-  fetchAndDisplayEvolutionChain,
+  fetchEvolutionChain,
+  fetchPokemonSpecies,
 } from "../../../use-cases/pokemon-api";
-import {
-  PokemonData,
-  Pokemon,
-  Evolution,
-  EvolutionNode,
-} from "../../models/pokemon";
+import { PokemonData, Pokemon } from "../../models/pokemon";
 
 interface FilterOptions {
   name?: string;
@@ -26,6 +22,10 @@ export async function listByNameAndTypesWithEvolutions(
 
     const pokemonListPromises: Promise<Pokemon>[] = filteredPokemonDataList.map(
       async (pokemonData) => {
+        const speciesPokemon =
+          (await fetchPokemonSpecies(pokemonData.id)) || "";
+        const evolutionChain = await fetchEvolutionChain(speciesPokemon);
+
         const pokemon: Pokemon = {
           id: pokemonData.id,
           name: pokemonData.name,
@@ -38,13 +38,9 @@ export async function listByNameAndTypesWithEvolutions(
             slot: type.slot,
             type_name: type.type.name,
           })),
+          // species: { name: pokemonData.species.name, url: pokemonData.species.url },
+          evolutions: evolutionChain,
         };
-        const evolutionChain = await fetchAndDisplayEvolutionChain(
-          pokemonData.id,
-        );
-        if (evolutionChain) {
-          pokemon.evolutions = mapEvolutionChainToEvolution(evolutionChain);
-        }
         return pokemon;
       },
     );
@@ -84,39 +80,4 @@ function filterPokemonDataList(
   }
 
   return filteredList;
-}
-
-function mapEvolutionChainToEvolution(
-  evolutionChain: EvolutionNode,
-): Evolution[] {
-  const evolutions: Evolution[] = [];
-
-  function traverse(node: EvolutionNode) {
-    const evolution: Evolution = {
-      id: getIdFromUrl(node.species.url),
-      name: node.species.name,
-      order: 0, // Não temos a informação de ordem disponível nesta estrutura
-      base_experience: 0, // Não temos a informação de experiência base disponível nesta estrutura
-      weight: 0, // Não temos a informação de peso disponível nesta estrutura
-      height: 0, // Não temos a informação de altura disponível nesta estrutura
-      image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${getIdFromUrl(node.species.url)}.png`,
-      types: [], // Não temos a informação de tipos disponível nesta estrutura
-    };
-
-    evolutions.push(evolution);
-
-    // Verificar se há evoluções posteriores
-    if (node.evolves_to.length > 0) {
-      node.evolves_to.forEach((evolutionNode) => traverse(evolutionNode));
-    }
-  }
-
-  traverse(evolutionChain);
-
-  return evolutions;
-}
-
-function getIdFromUrl(url: string): number {
-  const parts = url.split("/");
-  return parseInt(parts[parts.length - 2]);
 }

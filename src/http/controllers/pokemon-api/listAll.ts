@@ -18,6 +18,7 @@ export async function listAllPokemon(): Promise<Pokemon[]> {
             slot: type.slot,
             type_name: type.type.name,
           })),
+          // species: { name: pokemonData.species.name, url: pokemonData.species.url },
         };
 
         return pokemon;

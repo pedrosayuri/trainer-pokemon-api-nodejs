@@ -5,6 +5,7 @@ import fastifyJwt from "@fastify/jwt";
 import { trainersRoutes } from "./http/controllers/trainers/routes";
 import { teamRoutes } from "./http/controllers/team/routes";
 import { pokemonApiRoutes } from "./http/controllers/pokemon-api/routes";
+import { pokemonTeamRoutes } from "./http/controllers/pokemon/routes";
 
 export const app = fastify();
 
@@ -15,6 +16,7 @@ app.register(fastifyJwt, {
 app.register(trainersRoutes);
 app.register(teamRoutes);
 app.register(pokemonApiRoutes);
+app.register(pokemonTeamRoutes);
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
@@ -27,5 +29,5 @@ app.setErrorHandler((error, _, reply) => {
     console.error(error);
   }
 
-  return reply.status(500).send({ message: "Internal server error." });
+  reply.status(400).send({ message: error.message });
 });

@@ -1,17 +1,16 @@
+import { spec } from "node:test/reporters";
+
 export interface PokemonType {
   slot: number;
   type: { name: string };
 }
 
-export interface PokemonData {
-  id: number;
+export interface PokemonSpecies {
   name: string;
-  order: number;
-  base_experience: number;
-  weight: number;
-  height: number;
-  types: PokemonType[];
   url: string;
+  evolution_chain: {
+    url: string;
+  };
 }
 
 export interface Evolution {
@@ -23,6 +22,18 @@ export interface Evolution {
   height: number;
   image: string;
   types: { slot: number; type_name: string }[];
+  species: { name: string; url: string };
+}
+
+export interface PokemonData {
+  id: number;
+  name: string;
+  order: number;
+  base_experience: number;
+  weight: number;
+  height: number;
+  types: PokemonType[];
+  species: { name: string; url: string; evolution_chain: string };
 }
 
 export interface Pokemon {
@@ -34,7 +45,8 @@ export interface Pokemon {
   height: number;
   image: string;
   types: { slot: number; type_name: string }[];
-  evolutions?: Evolution[] | null;
+  // species: { name: string; url: string };
+  evolutions?: string[] | null;
 }
 
 export interface EvolutionDetails {
@@ -45,16 +57,21 @@ export interface EvolutionDetails {
 }
 
 export interface EvolutionNode {
-  is_baby: boolean;
   species: {
     name: string;
-    url: string;
   };
-  evolves_to: EvolutionNode[];
-  evolution_details: EvolutionDetails[];
+  is_baby: boolean;
+  evolves_to: ChainLink[];
 }
 
 export interface EvolutionChain {
+  baby_trigger_item: any;
+  chain: ChainLink;
   id: number;
-  chain: EvolutionNode;
+}
+
+export interface ChainLink {
+  is_baby: boolean;
+  species: PokemonSpecies;
+  evolves_to: ChainLink[];
 }
