@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Trainer {
+  id            String    @id @default(uuid())
+  username      String    @unique
+  password_hash String
+  created_at    DateTime  @default(now())
+  Pokemon       Pokemon[]
+  Team          Team[]
+
+  @@map("trainers")
+}
+
+model Pokemon {
+  id         String   @id @default(uuid())
+  trainer_id String
+  trainer    Trainer  @relation(fields: [trainer_id], references: [id])
+  created_at DateTime @default(now())
+  Team       Team?    @relation(fields: [team_id], references: [id])
+  team_id    String?
+
+  @@map("pokemons")
+}
+
+model Team {
+  id         String    @id @default(uuid())
+  name       String
+  trainer_id String
+  trainer    Trainer   @relation(fields: [trainer_id], references: [id])
+  pokemons   Pokemon[]
+
+  @@map("teams")
+}

@@ -1,0 +1,168 @@
+[
+  {
+    "id": 1,
+    "name": "bulbasaur",
+    "order": 1,
+    "base_experience": 64,
+    "weight": 69,
+    "height": 7,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+    "types": [
+      {
+        "slot": 1,
+        "type_name": "grass"
+      },
+      {
+        "slot": 2,
+        "type_name": "poison"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "ivysaur",
+    "order": 2,
+    "base_experience": 142,
+    "weight": 130,
+    "height": 10,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
+    "types": [
+      {
+        "slot": 1,
+        "type_name": "grass"
+      },
+      {
+        "slot": 2,
+        "type_name": "poison"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "venusaur",
+    "order": 3,
+    "base_experience": 263,
+    "weight": 1000,
+    "height": 20,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png",
+    "types": [
+      {
+        "slot": 1,
+        "type_name": "grass"
+      },
+      {
+        "slot": 2,
+        "type_name": "poison"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "charmander",
+    "order": 5,
+    "base_experience": 62,
+    "weight": 85,
+    "height": 6,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+    "types": [
+      {
+        "slot": 1,
+        "type_name": "fire"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "charmeleon",
+    "order": 6,
+    "base_experience": 142,
+    "weight": 190,
+    "height": 11,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
+    "types": [
+      {
+        "slot": 1,
+        "type_name": "fire"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "charizard",
+    "order": 7,
+    "base_experience": 267,
+    "weight": 905,
+    "height": 17,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png",
+    "types": [
+      {
+        "slot": 1,
+        "type_name": "fire"
+      },
+      {
+        "slot": 2,
+        "type_name": "flying"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "squirtle",
+    "order": 10,
+    "base_experience": 63,
+    "weight": 90,
+    "height": 5,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
+    "types": [
+      {
+        "slot": 1,
+        "type_name": "water"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "wartortle",
+    "order": 11,
+    "base_experience": 142,
+    "weight": 225,
+    "height": 10,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png",
+    "types": [
+      {
+        "slot": 1,
+        "type_name": "water"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "blastoise",
+    "order": 12,
+    "base_experience": 265,
+    "weight": 855,
+    "height": 16,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png",
+    "types": [
+      {
+        "slot": 1,
+        "type_name": "water"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "caterpie",
+    "order": 14,
+    "base_experience": 39,
+    "weight": 29,
+    "height": 3,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png",
+    "types": [
+      {
+        "slot": 1,
+        "type_name": "bug"
+      }
+    ]
+  }
+]
