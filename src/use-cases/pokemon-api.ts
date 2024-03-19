@@ -10,9 +10,7 @@ export async function fetchPokemonData(): Promise<PokemonData[]> {
   try {
     const response: AxiosResponse<{
       results: { name: string; url: string }[];
-    }> = await axios.get(
-      "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0",
-    );
+    }> = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=16&offset=0");
 
     const pokemonDetailsPromises: Promise<PokemonData>[] =
       response.data.results.map((pokemon) =>
