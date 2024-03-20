@@ -1,0 +1,19 @@
+FROM node:latest
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+RUN npm install -g prisma
+
+RUN apt-get update && apt-get install -y netcat-openbsd
+
+COPY prisma/schema.prisma ./prisma/
+
+ENV DATABASE_URL="postgresql://docker:docker@database:5432/apipokemontrainer?schema=public"
+
+CMD ["sh", "-c", "until nc -z database 5432; do sleep 1; done && npx prisma migrate dev && npm run start:dev"]
+
+COPY . .
